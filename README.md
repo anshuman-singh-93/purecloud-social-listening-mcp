@@ -13,9 +13,10 @@ The system allows an AI agent to perform actions within Genesys Cloud, specifica
 
 ## Prerequisites
 
--   Python 3.14 or higher
+-   Python 3.12 or higher
 -   A Genesys Cloud (PureCloud) account with appropriate permissions.
 -   OAuth Client Credentials (Client ID and Secret) for Genesys Cloud.
+-   OpenAI API Key (for the agent).
 
 ## Installation
 
@@ -31,7 +32,7 @@ This project uses `uv` for dependency management.
     ```bash
     uv sync
     # Or using pip
-    pip install -r requirements.txt # (If you generate one)
+    pip install .
     ```
 
 ## Configuration
@@ -44,34 +45,45 @@ GENESYS_CLOUD_CLIENT_SECRET=your_client_secret
 GENESYS_CLOUD_ENVIRONMENT=mypurecloud.com  # e.g., mypurecloud.com, usw2.pure.cloud
 GENESYS_DIVISON_ID=your_division_id
 API_MAGIC_TOKEN=random token to protect api
+OPENAI_API_KEY=your_openai_api_key
 ```
 
 ## Usage
 
-You need to run both the MCP server and the Web Application.
+You can run the application directly or using Docker.
 
-### 1. Start the MCP Server
+### Option 1: Docker (Recommended)
 
-The MCP server provides the tools to the agent.
-
-```bash
-python mcp_server.py
-```
-This will start the MCP server on port 3232.
-
-### 2. Start the Web Application
-
-The web application hosts the chat interface.
+Build and run the container. This handles both the server and the web app in one go.
 
 ```bash
-python app.py
-```
-Or using uvicorn directly:
-```bash
-uvicorn app:app --host 0.0.0.0 --port 8000
+docker build -t mcp-social-listening .
+docker run -p 8000:8000 --env-file .env mcp-social-listening
 ```
 
-### 3. Interact
+Then visit `http://localhost:8000`.
+
+### Option 2: Local Development
+
+You need to run both the MCP server and the Web Application. We provided a helper script:
+
+```bash
+./start.sh
+```
+
+Or run them manually in separate terminals:
+
+1.  **Start the MCP Server** (Port 3232)
+    ```bash
+    python mcp_server.py
+    ```
+
+2.  **Start the Web Application** (Port 8000)
+    ```bash
+    uvicorn app:app --host 0.0.0.0 --port 8000
+    ```
+
+### Interact
 
 Open your browser and navigate to `http://localhost:8000`. You can now chat with the agent. For example, you can ask:
 
@@ -84,6 +96,8 @@ Open your browser and navigate to `http://localhost:8000`. You can now chat with
 -   `agent.py`: Agent logic using `openai-agents` to connect to the MCP server.
 -   `app.py`: FastAPI web server serving the frontend and handling user requests.
 -   `pyproject.toml`: Project dependencies and metadata.
+-   `Dockerfile`: Configuration for containerizing the application.
+-   `start.sh`: Startup script for running services.
 
 ## Tools
 
@@ -100,12 +114,7 @@ The simplest way to host this application is using the provided `Dockerfile`. Th
 1.  Push this repository to GitHub.
 2.  Connect your GitHub repository to Railway or Render.
 3.  It will automatically detect the `Dockerfile`.
-4.  **Important**: You must set the Environment Variables in the hosting dashboard (Railway/Render console):
-    *   `GENESYS_CLOUD_CLIENT_ID`
-    *   `GENESYS_CLOUD_CLIENT_SECRET`
-    *   `GENESYS_CLOUD_ENVIRONMENT`
-    *   `GENESYS_DIVISON_ID`
-    *   `API_MAGIC_TOKEN`
+4.  **Important**: You must set all the Environment Variables in the hosting dashboard (Railway/Render console), including `OPENAI_API_KEY`.
 
 ### 2. Manual Docker Run
 
@@ -119,6 +128,7 @@ docker run -p 8000:8000 \
   -e GENESYS_CLOUD_ENVIRONMENT=... \
   -e GENESYS_DIVISON_ID=... \
   -e API_MAGIC_TOKEN=... \
+  -e OPENAI_API_KEY=... \
   mcp-social-listening
 ```
 
