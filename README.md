@@ -43,6 +43,7 @@ GENESYS_CLOUD_CLIENT_ID=your_client_id
 GENESYS_CLOUD_CLIENT_SECRET=your_client_secret
 GENESYS_CLOUD_ENVIRONMENT=mypurecloud.com  # e.g., mypurecloud.com, usw2.pure.cloud
 GENESYS_DIVISON_ID=your_division_id
+API_MAGIC_TOKEN=random token to protect api
 ```
 
 ## Usage
