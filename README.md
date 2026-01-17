@@ -2,6 +2,9 @@
 
 This project implements a Model Context Protocol (MCP) server that integrates with Genesys Cloud (PureCloud) to provide social listening capabilities to AI agents. It includes a web interface to interact with the agent.
 
+### Demo
+https://purecloud-social-listening-mcp-production.up.railway.app/
+
 ## Overview
 
 The system allows an AI agent to perform actions within Genesys Cloud, specifically focused on Social Listening. Currently, it supports creating social listening topics. The architecture consists of:
