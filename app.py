@@ -6,7 +6,7 @@ from agent import query
 import os
 load_dotenv()
 app = FastAPI()
-API_MAGIC_TOKEN = os.environ('API_MAGIC_TOKEN')
+API_MAGIC_TOKEN = os.environ.get('API_MAGIC_TOKEN')
 class FormData(BaseModel):
     message: str
     token: str
@@ -117,11 +117,11 @@ async def home(request: Request):
     </head>
     <body>
         <div class="container">
-            <h1>Submit Your Message</h1>
+            <h1>Write your query</h1>
             <form id="messageForm">
                 <div class="form-group">
                     <label for="message">Message</label>
-                    <input type="text" id="message" name="message" placeholder="Enter your message" required>
+                    <input type="text" id="message" name="message" placeholder="Enter your query" required>
                 </div>
                 <div class="form-group">
                     <label for="token">Magic Token</label>
@@ -169,14 +169,14 @@ async def home(request: Request):
 async def submit_form(message: str = Form(...), token: str = Form(...)):
     if token != API_MAGIC_TOKEN:
         return {
-            "success": False
+            "success": False,
             "error": "Invalid token"
         }
 
     result =  await query(message)
     print("result", result)
     return {
-        "success": True
+        "success": True,
         "result": result
     }
 

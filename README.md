@@ -90,3 +90,35 @@ Open your browser and navigate to `http://localhost:8000`. You can now chat with
 Currently available tools:
 
 -   **`create_topic(name: str)`**: Creates a new social listening topic in the configured Genesys Cloud division.
+
+## Deployment
+
+The simplest way to host this application is using the provided `Dockerfile`. This allows you to deploy to any platform that supports Docker (e.g., Railway, Render, Fly.io, DigitalOcean).
+
+### 1. Railway / Render (Recommended)
+
+1.  Push this repository to GitHub.
+2.  Connect your GitHub repository to Railway or Render.
+3.  It will automatically detect the `Dockerfile`.
+4.  **Important**: You must set the Environment Variables in the hosting dashboard (Railway/Render console):
+    *   `GENESYS_CLOUD_CLIENT_ID`
+    *   `GENESYS_CLOUD_CLIENT_SECRET`
+    *   `GENESYS_CLOUD_ENVIRONMENT`
+    *   `GENESYS_DIVISON_ID`
+    *   `API_MAGIC_TOKEN`
+
+### 2. Manual Docker Run
+
+You can build and run the container locally or on a VPS:
+
+```bash
+docker build -t mcp-social-listening .
+docker run -p 8000:8000 \
+  -e GENESYS_CLOUD_CLIENT_ID=... \
+  -e GENESYS_CLOUD_CLIENT_SECRET=... \
+  -e GENESYS_CLOUD_ENVIRONMENT=... \
+  -e GENESYS_DIVISON_ID=... \
+  -e API_MAGIC_TOKEN=... \
+  mcp-social-listening
+```
+
