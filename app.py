@@ -19,7 +19,7 @@ async def home(request: Request):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Message Form</title>
+        <title>Query Form</title>
         <style>
             * {
                 margin: 0;
@@ -141,7 +141,7 @@ async def home(request: Request):
             <h1>Write your query</h1>
             <form id="messageForm">
                 <div class="form-group">
-                    <label for="message">Message</label>
+                    <label for="message">Query</label>
                     <input type="text" id="message" name="message" placeholder="Enter your query" required>
                 </div>
                 <div class="form-group">
