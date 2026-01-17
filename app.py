@@ -113,6 +113,27 @@ async def home(request: Request):
                 font-size: 14px;
                 line-height: 1.6;
             }
+            .spinner {
+                display: none;
+                width: 20px;
+                height: 20px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                border-top-color: white;
+                animation: spin 1s ease-in-out infinite;
+                margin-left: 10px;
+                vertical-align: middle;
+            }
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+            button.loading .spinner {
+                display: inline-block;
+            }
+            button:disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
+            }
         </style>
     </head>
     <body>
@@ -127,7 +148,10 @@ async def home(request: Request):
                     <label for="token">Magic Token</label>
                     <input type="password" id="token" name="token" placeholder="Enter your magic token" required>
                 </div>
-                <button type="submit">Submit</button>
+                <button type="submit" id="submitBtn">
+                    <span>Submit</span>
+                    <span class="spinner"></span>
+                </button>
             </form>
             <div class="response" id="response">
                 <h3>Response</h3>
@@ -139,9 +163,14 @@ async def home(request: Request):
             document.getElementById('messageForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
+                const submitBtn = document.getElementById('submitBtn');
                 const formData = new FormData();
                 formData.append('message', document.getElementById('message').value);
                 formData.append('token', document.getElementById('token').value);
+                
+                // Show loader and disable button
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
                 
                 try {
                     const response = await fetch('/submit', {
@@ -157,6 +186,10 @@ async def home(request: Request):
                     responseDiv.classList.add('show');
                 } catch (error) {
                     alert('Error submitting form: ' + error.message);
+                } finally {
+                    // Hide loader and enable button
+                    submitBtn.classList.remove('loading');
+                    submitBtn.disabled = false;
                 }
             });
         </script>
