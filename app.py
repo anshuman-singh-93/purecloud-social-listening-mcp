@@ -142,7 +142,7 @@ async def home(request: Request):
             <form id="messageForm">
                 <div class="form-group">
                     <label for="message">Query</label>
-                    <input type="text" id="message" name="message" placeholder="Enter your query" required>
+                    <input type="text" id="message" name="message" placeholder="eg. Create a topic with name Uber" required>
                 </div>
                 <div class="form-group">
                     <label for="token">Magic Token</label>
